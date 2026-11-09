@@ -36,10 +36,39 @@ class View:
         self.txt_titolo = ft.Text(value="Biblioteche di Torino", size=38, weight=ft.FontWeight.BOLD)
 
         # --- Sezione 2: Filtraggio ---
-        # TODO
+
+        self.dd_biblioteche = ft.Dropdown(
+            label="Biblioteca",
+            width=300,
+            options=[
+                ft.DropdownOption("Nessun filtro")
+            ],
+            value="Nessun filtro",
+            on_select=self.on_biblioteca_change
+        )
+
+        self.dd_generi = ft.Dropdown(
+            label="Genere",
+            width=300,
+            options=[
+                ft.DropdownOption("Nessun filtro")
+            ],
+            value="Nessun filtro",
+            on_select=self.on_genere_change
+        )
+
 
         # Sezione 3: Libri
-        # TODO
+        self.btn_mostra_libri = ft.Button(
+            content="Mostra Libri",
+            on_click=self.on_mostra_libri
+        )
+
+        self.lv_libri = ft.ListView(
+            expand=False,
+            spacing=10,
+            height=400
+        )
 
         # --- Toggle Tema ---
         self.toggle_cambia_tema = ft.Switch(label="Tema scuro", value=True, on_change=self.cambia_tema)
@@ -53,14 +82,32 @@ class View:
             ft.Divider(),
 
             # Sezione 2: Filtraggio
-            # TODO
+            ft.Row(
+                controls=[
+                    self.dd_biblioteche,
+                    self.dd_generi
+                ],
+                alignment=ft.MainAxisAlignment.CENTER
+            ),
 
             # Sezione 3: Libri
-            # TODO
+            self.btn_mostra_libri,
+            self.lv_libri
         )
 
         self.page.scroll = "adaptive"
         self.page.update()
+
+     # --- CALLBACKS DROPDOWN ---
+    def on_biblioteca_change(self, e):
+        self.controller.on_biblioteca_change(e)
+
+    def on_genere_change(self, e):
+        self.controller.on_genere_change(e)
+
+    # --- AZIONE: MOSTRA LIBRI ---
+    def on_mostra_libri(self, e):
+        self.controller.mostra_libri(e)
 
     def cambia_tema(self, e):
         """ Cambia tema scuro/chiaro """

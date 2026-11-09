@@ -10,4 +10,29 @@ class BibliotecaDAO:
     def __init__(self):
         pass
 
-    # TODO
+
+    def get_all_biblioteche(self) -> list[Biblioteca] | None:
+        conn = DBConnect.get_connection()
+
+        if conn is None:
+            return None
+
+        results = []
+
+        cursor = conn.cursor(dictionary=True)
+        query = "SELECT * FROM biblioteca"
+        cursor.execute(query)
+
+        for row in cursor:
+            biblioteca = Biblioteca(
+                row["id"],
+                row["nome"],
+                row["indirizzo"]
+            )
+            results.append(biblioteca)
+
+        cursor.close()
+        conn.close()
+
+        return results
+
